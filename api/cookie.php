@@ -75,6 +75,9 @@ curl_setopt_array($ch, [
 
 $response = curl_exec($ch);
 
+print_r($response);
+exit;
+
 if (curl_errno($ch)) {
     echo json_encode(["error" => curl_error($ch)]);
     exit;
