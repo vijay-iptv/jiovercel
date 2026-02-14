@@ -6,16 +6,13 @@ $id = 896;
 
 /* ================= Load Credentials ================= */
 
-$filePath = __DIR__ . '/creds.jtv';
-$keyFile  = __DIR__ . '/credskey.jtv';
+$key_data = $_ENV['CREDS_KEY'] ?? '';
+$encryptedCreds = $_ENV['CREDS_DATA'] ?? '';
 
-if (!file_exists($filePath) || !file_exists($keyFile)) {
-    echo json_encode(["error" => "Credential files not found"]);
+if (!$key_data || !$encryptedCreds) {
+    echo json_encode(["error" => "Missing environment credentials"]);
     exit;
 }
-
-$key_data = file_get_contents($keyFile);
-$encryptedCreds = file_get_contents($filePath);
 
 $creds = decrypt_data($encryptedCreds, $key_data);
 $jio_cred = json_decode($creds, true);
