@@ -1,18 +1,19 @@
 <?php
 
-header('Content-Type: application/json');
-
 $id = 896;
 
 /* ================= Load Credentials ================= */
 
-$key_data = $_ENV['CREDS_KEY'] ?? '';
-$encryptedCreds = $_ENV['CREDS_DATA'] ?? '';
+$filePath = '../creds.jtv';
+$keyFile  = '../credskey.jtv';
 
-if (!$key_data || !$encryptedCreds) {
-    echo json_encode(["error" => "Missing environment credentials"]);
+if (!file_exists($filePath) || !file_exists($keyFile)) {
+    echo json_encode(["error" => "Credential files not found"]);
     exit;
 }
+
+$key_data = file_get_contents($keyFile);
+$encryptedCreds = file_get_contents($filePath);
 
 $creds = decrypt_data($encryptedCreds, $key_data);
 $jio_cred = json_decode($creds, true);
@@ -75,8 +76,6 @@ curl_setopt_array($ch, [
 
 $response = curl_exec($ch);
 
-
-
 if (curl_errno($ch)) {
     echo json_encode(["error" => curl_error($ch)]);
     exit;
@@ -91,7 +90,8 @@ if (empty($data['mpd']['result'])) {
 }
 
 $mpdUrl = $data['mpd']['result'];
-
+print_r($data);
+echo '<br>';
 /* ================= Second Request ================= */
 
 $ch = curl_init($mpdUrl);
@@ -106,10 +106,8 @@ curl_setopt_array($ch, [
 ]);
 
 $response = curl_exec($ch);
-echo $mpdUrl;
-echo '<br>';
-print_r($response);
-exit;
+
+print_r($response);exit;
 if (curl_errno($ch)) {
     echo json_encode(["error" => curl_error($ch)]);
     exit;
