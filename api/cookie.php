@@ -75,8 +75,7 @@ curl_setopt_array($ch, [
 
 $response = curl_exec($ch);
 
-print_r($response);
-exit;
+
 
 if (curl_errno($ch)) {
     echo json_encode(["error" => curl_error($ch)]);
@@ -101,12 +100,16 @@ curl_setopt_array($ch, [
     CURLOPT_HEADER => true,
     CURLOPT_TIMEOUT => 15,
     CURLOPT_HTTPHEADER => [
-        'User-Agent: plaYtv/7.1.3 (Linux;Android 14)',
+        'User-Agent: plaYtv/7.1.3 (Linux;Android 14) ExoPlayerLib/2.11.7',
+        'Content-Type: application/x-www-form-urlencoded'
     ],
 ]);
 
 $response = curl_exec($ch);
-
+echo $mpdUrl;
+echo '<br>';
+print_r($response);
+exit;
 if (curl_errno($ch)) {
     echo json_encode(["error" => curl_error($ch)]);
     exit;
