@@ -80,7 +80,6 @@ if (curl_errno($ch)) {
     exit;
 }
 
-curl_close($ch);
 
 $data = json_decode($response, true);
 
@@ -113,7 +112,6 @@ if (curl_errno($ch)) {
 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 $header = substr($response, 0, $header_size);
 
-curl_close($ch);
 
 $cookies = extractCookies($header);
 
