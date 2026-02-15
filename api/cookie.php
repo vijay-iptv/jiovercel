@@ -103,6 +103,8 @@ if (empty($data['mpd']['result'])) {
 }
 
 $mpdUrl = $data['mpd']['result'];
+
+
 $ch = curl_init($mpdUrl);
 
 curl_setopt_array($ch, [
